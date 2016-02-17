@@ -13,7 +13,7 @@ public interface IBanqueDao {
 	List<Beneficiary> getBeneficiaries(Subscriber subscriber);
 	Beneficiary getBeneficiaryById(Long id);
 	List<Account> getAccountBySubscriber(Subscriber subscriber);
-	List<Account> getAccountBySubscriberId(int id);
+	List<Account> getAccountBySubscriberId(Long id);
 	Boolean Save(List<MultipleTransfersBeneficiary> mtb);
 	Boolean Confirme(String username,String password);
 	Subscriber findByUsername(String username);	

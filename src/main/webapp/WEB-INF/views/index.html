@@ -65,13 +65,17 @@
 						});
 						
 						var comptes =Ext.create('Ext.data.Store',{
-							fields: ['abbr', 'name'],
+							fields: ['entitled'],
 						    autoload:true,
-							data: [
-						        {"abbr":"AL", "name":"994949494984"},
-						        {"abbr":"AK", "name":"484949494984"},
-						        {"abbr":"AZ", "name":"484949494984"},
-   							 ]
+						    proxy: {
+						        type: 'ajax',
+						        url:  [[@{/comptes}]],
+						        reader: {
+						            type: 'json',
+						            root: 'root',
+						            successProperty: 'success'
+						        }
+						    }
 						});
 						
 						var formPanel = Ext.create('Ext.form.Panel', {
@@ -198,7 +202,7 @@
 					                            width:480,
 					                           fieldLabel: 'Choisir un compte',
 					                            store: comptes,
-					                            displayField: 'name', 
+					                            displayField: 'entitled', 
 					                        }]
 					                    },{
 					                        xtype: 'panel',

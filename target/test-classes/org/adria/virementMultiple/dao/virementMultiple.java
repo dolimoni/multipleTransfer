@@ -60,7 +60,14 @@ public class virementMultiple {
 	
 	@Test
 	public void getAccountBySubscriberIdServiceTest(){
-		System.out.println(banqueService.getAccountBySubscriberId(1)+"!!!!!!!!!!");
+		System.out.println("getAccountBySubscriberIdServiceTest --> "+banqueService.getAccountBySubscriberId(new Long(1)));
+	}
+	
+	@Test
+	public void getAccountBySubscriberIdSubscriberTest(){
+		Subscriber subscriber =new Subscriber("jira", "ensa", "Atlas", "abdelghafor");
+		subscriber.setId(new Long(1));
+		System.out.println("getAccountBySubscriberIdSubscriberTest --> "+banqueService.getAccountBySubscriber(subscriber));
 	}
 
 }

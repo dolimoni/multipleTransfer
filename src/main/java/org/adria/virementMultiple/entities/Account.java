@@ -57,6 +57,12 @@ public class Account implements Serializable{
 	public void setBalancing(BigInteger balancing) {
 		this.balancing = balancing;
 	}
+
+	@Override
+	public String toString() {
+		return "Account [accountNumber=" + accountNumber + ", entitled=" + entitled + ", balancing=" + balancing
+				+ ", subscriber=" + subscriber + "]";
+	}
 	
 	
 }

@@ -20,6 +20,7 @@ public interface AccountRepo extends JpaRepository<Account, Integer>{
 	 * @return
 	 */
 	public List<Account> findBySubscriber(Subscriber subscriber);
+	public List<Account> findByAccountNumber(Long id);
 	
  
 }

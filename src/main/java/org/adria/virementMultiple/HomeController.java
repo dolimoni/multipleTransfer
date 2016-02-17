@@ -2,11 +2,14 @@ package org.adria.virementMultiple;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.adria.virementMultiple.entities.Account;
 import org.adria.virementMultiple.entities.Beneficiary;
+import org.adria.virementMultiple.entities.Subscriber;
 import org.adria.virementMultiple.service.IBanqueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +55,13 @@ public class HomeController {
 		return banqueService.getBeneficiaryById(new Long(1));
 	}
 	
+	@RequestMapping(value = "/comptes", method = RequestMethod.GET)
+	public  @ResponseBody  List<Account> comptes(){
+		Subscriber subscriber =new Subscriber("jira", "ensa", "Atlas", "abdelghafor");
+		subscriber.setId(new Long(1));
+		return banqueService.getAccountBySubscriber(subscriber);
+	}
+	
 	@RequestMapping(value = "/auth", method = RequestMethod.POST)
 	public  @ResponseBody  Beneficiary auth(@RequestBody  Test auth,HttpServletRequest request){
 		
@@ -62,6 +72,8 @@ public class HomeController {
 		System.out.println(username+" "+password);
 		return banqueService.getBeneficiaryById(new Long(1));
 	}
+	
+	
 	
 	
 }

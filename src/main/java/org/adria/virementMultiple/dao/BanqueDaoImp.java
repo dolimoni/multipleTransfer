@@ -50,11 +50,11 @@ public class BanqueDaoImp implements IBanqueDao{
 	}
 
 	@Override
-	public List<Account> getAccountBySubscriberId(int id) {
+	public List<Account> getAccountBySubscriberId(Long id) {
 		
-		System.out.println(sr.findByUsername("dolimoni"));
 		
-		return null;
+		
+		return ar.findByAccountNumber(id);
 		
 	  
 	}

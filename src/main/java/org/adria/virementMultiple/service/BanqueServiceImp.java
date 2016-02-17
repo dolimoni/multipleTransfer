@@ -44,7 +44,7 @@ public class BanqueServiceImp implements IBanqueService{
 	}
 	
 	@Override
-	public List<Account> getAccountBySubscriberId(int id) {
+	public List<Account> getAccountBySubscriberId(Long id) {
 		
 		return banqueDao.getAccountBySubscriberId(id);
 	}
