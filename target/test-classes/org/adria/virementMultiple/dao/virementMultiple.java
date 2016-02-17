@@ -1,5 +1,8 @@
 package org.adria.virementMultiple.dao;
 
+import java.util.List;
+
+import org.adria.virementMultiple.entities.Account;
 import org.adria.virementMultiple.entities.Beneficiary;
 import org.adria.virementMultiple.entities.Subscriber;
 import org.junit.Test;
@@ -24,6 +27,9 @@ public class virementMultiple {
 	
 	@Autowired 
 	IBanqueDao banqueDao;
+	
+	@Autowired
+	private IBanqueDao banqueService;
 	
 	@Test
 	public void findByUsernameTest(){
@@ -50,6 +56,11 @@ public class virementMultiple {
 	public void findBeneficiaryById(){
 		Beneficiary b=banqueDao.getBeneficiaryById(new Long(1));
 		System.out.println(b.getFirstName());
+	}
+	
+	@Test
+	public void getAccountBySubscriberIdServiceTest(){
+		System.out.println(banqueService.getAccountBySubscriberId(1)+"!!!!!!!!!!");
 	}
 
 }

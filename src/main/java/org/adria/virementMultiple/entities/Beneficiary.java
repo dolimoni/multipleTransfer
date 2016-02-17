@@ -1,7 +1,6 @@
 package org.adria.virementMultiple.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 @Entity
 public class Beneficiary implements Serializable{
@@ -31,7 +32,7 @@ public class Beneficiary implements Serializable{
 	@JoinColumn(name="SUBSCRIBER_ID")
 	private Subscriber subscriber;
 	
-	
+	@JsonIgnore
 	@OneToMany(mappedBy = "beneficiary")
 	private Set<MultipleTransfersBeneficiary> mtb = new HashSet<MultipleTransfersBeneficiary>();
 	
