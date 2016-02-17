@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1" />
+<title>Home page</title>
+<!-- Extjs import -->
+<link rel="stylesheet" type="text/js" href="resources/extjs/ext-all.css" />
+<script type="text/javascript" src="resources/extjs/ext-all.js"></script>
+<!-- Our script -->
+<style type="text/css">
+.pagecontainer {
+	display: none;
+}
+</style>
+</head>
+
+<body>
+	<form method="POST" th:action="@{/abonne/login}">
+		<noscript>
+
+			<div class="noscriptmsg">You don't have javascript enabled.
+				Good luck with that.</div>
+		</noscript>
+		<div style="margin-top: 250px; margin-left: 450px;" id="loginAbonne" />
+	</form>
+	<script th:inline="javascript">
+		Ext.onReady(function() {
+			    Ext.QuickTips.init();
+
+			    var required = '<span style="color:red;font-weight:bold" data-qtip="Required">*</span>';
+			    var simple = Ext.widget({
+			        xtype: 'form',
+			        layout: 'form',
+			        renderTo: 'loginAbonne',
+			        collapsible: true,
+			        id: 'abonneAccessForm',
+			        frame: true,
+			        title: 'Abonne access',
+			        bodyPadding: '5 5 0',
+			        width: 350,
+			        fieldDefaults: {
+			            msgTarget: 'side'
+			        },
+			        defaultType: 'textfield',
+			        items: [{
+			            fieldLabel: 'Username',
+			            afterLabelTextTpl: required,
+			            name: 'login',
+			            allowBlank: false,
+			            tooltip: 'Enter Abonne Username'
+			        },{
+			        	xtype: 'textfield',
+			        	inputType: 'password',
+			            fieldLabel: 'Password',
+			            afterLabelTextTpl: required,
+			            name: 'password',
+			            allowBlank: false,
+			            tooltip: 'Enter password'
+			        },
+			        {
+			        	xtype: 'displayfield',
+			            fieldLabel: '<a href="/taf/abonne/addForm" style="text-align:right;">add Abonne</a>'
+			        	}],
+
+			        buttons: [{
+			            text: 'Login',
+			            handler: function() {
+			                var form = this.up('form').getForm();
+			                form.submit({
+			                	url: [[@{/abonne/login}]],
+			                	success: function(fp, o) {
+			                		location.href = '/taf/abonne/index';
+			                		 //Ext.Msg.alert('Success', Ext.decode(o.response.responseText).msg);
+			                	},
+			                	failure: function(fp, o) {
+			                		Ext.Msg.alert('Failure', Ext.decode(o.response.responseText).msg);
+								} 
+			                })
+			            }
+			        },{
+			            text: 'Cancel',
+			            handler: function() {
+			                this.up('form').getForm().reset();
+			            }
+			        }]
+			    });
+
+			    /* simple.render(document.body); */
+		});
+	</script>
+</body>
+</html>
+

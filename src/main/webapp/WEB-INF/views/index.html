@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1" />
+<title>Home page</title>
+<!-- Extjs import -->
+<link rel="stylesheet" type="text/css"
+	href="resources/extjs/ext-all.css" />
+<script type="text/javascript" src="resources/extjs/ext-all.js"></script>
+<!-- Our script -->
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+
+			Ext.onReady(function() {
+						Ext.QuickTips.init();
+						var beneficiarySelected= Ext.create('Ext.data.Store', {
+						    fields: ['name', 'montant','idb'],
+						    autoLoad:false,
+						   /* proxy: {
+						        type: 'ajax',
+						        url: 'data/beneficiarySelected.json',
+						        reader: {
+						            type: 'json',
+						            root: 'beneficiarySelected',
+						            successProperty: 'success'
+						        }
+						    }*/
+
+						    data: [
+						        {"name":"essalhi", "montant":"791995191992","idb":"0533333333"},
+						        {"name":"essalhi", "montant":"","idb":"0444444444"}
+						    ]
+						});
+						var beneficiaries = Ext.create('Ext.data.Store', {
+						    fields: ['identifiant', 'accountNumber'],
+						    autoload:true,
+						   /* proxy: {
+						        type: 'ajax',
+						        url: 'data/beneficiaries.json',
+						        reader: {
+						            type: 'json',
+						            root: 'beneficiaries',
+						            successProperty: 'success'
+						        }
+						    }*/
+						    data : [
+						       
+						        {"identifiant":"4949", "accountNumber":"791995191992"},
+						        {"identifiant":"1984", "accountNumber":"984495121200"},
+						        {"identifiant":"4491", "accountNumber":"484949494984"},
+						        {"identifiant":"0551", "accountNumber":"791995191992"},
+						        {"identifiant":"0589", "accountNumber":"984495121200"},
+						        {"identifiant":"7813", "accountNumber":"484949494984"},
+						        {"identifiant":"6521", "accountNumber":"791995191992"},
+						        {"identifiant":"8910", "accountNumber":"984495121200"},
+						        {"identifiant":"0567", "accountNumber":"484949494984"},
+						    ]
+						});
+						
+						var comptes =Ext.create('Ext.data.Store',{
+							fields: ['abbr', 'name'],
+						    autoload:true,
+							data: [
+						        {"abbr":"AL", "name":"994949494984"},
+						        {"abbr":"AK", "name":"484949494984"},
+						        {"abbr":"AZ", "name":"484949494984"},
+   							 ]
+						});
+						
+						var formPanel = Ext.create('Ext.form.Panel', {
+							 xtype: 'panel',
+					            title: 'Virememnt Multiple',
+					            
+					            height: 800,
+					            margins: '50 62 100 105',
+					            width: '100%',
+					            layout: 'border',
+					            items:[
+		 			                {        
+					                    region:'east',
+					                    xtype: 'grid',
+					                    store: beneficiarySelected,
+									      selType: 'cellmodel',
+									       width: '50%',
+									       height: 250,
+									       title: 'Béneficiaires des virements',
+
+									       columns: [
+									           {
+
+									               text: 'Béneficiaires',
+									               width: 100,
+									               sortable: false,
+									               hideable: false,
+									               dataIndex: 'name'
+									           }
+									           ,
+									           {
+									               text: 'Montant',
+									               width: 150,
+									               dataIndex: 'montant',
+									               hidden: false,
+									               editor: 'textfield'
+									           },
+									           {
+									               text: 'idb',
+									               flex: 1,
+									               dataIndex: 'idb'
+									           }
+									           ,{
+									            xtype:'actioncolumn',
+									            width:50,
+									            items: [{
+									                icon: 'resources/images/delete.png',
+									                tooltip: 'Delete',
+									                handler: function(grid, rowIndex, colIndex) {
+									                    var rec = grid.getStore().getAt(rowIndex);
+									                    grid.getStore().remove(rec);
+									                }
+									            }]
+									        }
+									       ]/* ,
+									       initComponent: function () {
+									        this.plugins = [Ext.create('Ext.grid.plugin.CellEditing', {
+									            clicksToEdit: 1
+									        })];
+
+									        this.callParent(arguments);
+									    } */
+								    
+					                },{
+					                	 region:'west',
+						                 xtype: 'grid',
+						                 alias: 'widget.beneficiaryList',
+						                 
+						                 store:beneficiaries, 
+						                 width: '50%',
+						                 height: 250,
+						                 title: 'Choisir les bénéficiaires',
+						                 
+						                 columns: [
+						                     {
+
+						                         text: 'Béneficiaires',
+						                         flex:3,
+						                         sortable: false,
+						                         hideable: false,
+						                         dataIndex: 'identifiant'
+						                     },
+						                     {
+						                         text: 'accountNumber',
+						                         flex:5,
+						                         dataIndex: 'accountNumber',
+						                         hidden: false
+						                     },
+						                 ]
+						              
+					                },{
+					                	region:'south',
+					                	xtype:'panel',
+					                	id:'virement',
+					                    height:300,
+					                    widh:520,
+					                    layout: {
+					                        type: 'table',
+					                        // The total column count must be specified here
+					                        columns: 2,
+					                        tableAttrs: {
+					                        style: {
+					                            width: '100%',
+					                            height:'100%',
+					                        }
+					                    }
+					                    },defaults: {
+					                        // applied to each contained panel
+					                        bodyStyle: 'padding:20px',
+					                         border:false,
+					                    },
+					                    items:[{
+					                        xtype: 'panel',
+					                        height:'100%',
+
+					                        layout: {
+					                            pack: 'center',
+					                            type: 'hbox'
+					                        },
+
+					                        width: '100%',
+					                        items: [{
+					                            xtype: 'combobox',
+					                            width:480,
+					                           fieldLabel: 'Choisir un compte',
+					                            store: comptes,
+					                            displayField: 'name', 
+					                        }]
+					                    },{
+					                        xtype: 'panel',
+					                        height:'100%',
+					                        layout: {
+					                            pack: 'center',
+					                            type: 'hbox'
+					                        },
+					                        width: '100%',
+					                        items: [{
+					                            xtype: 'textfield',
+					                            fieldLabel: 'Date de création',
+					                            width:480,
+					                            value:'16/02/2016',
+					                            disabled: true
+					                        }]
+					                    },{
+					                        xtype: 'panel',
+					                        height:'100%',
+					                        layout: {
+					                            pack: 'center',
+					                            type: 'hbox'
+					                        },
+					                        width: '100%',
+					                        items: [{
+					                           xtype: 'datefield',
+					                            fieldLabel: 'Date d\'exécution',
+					                            msgTarget: 'under',
+					                            width:480
+					                        }]
+					                    },{
+					                        xtype: 'panel',
+					                        height:'100%',
+					                        layout: {
+					                            pack: 'center',
+					                            type: 'hbox'
+					                        },
+					                        width: '100%',
+					                        items: [{
+					                            xtype: 'textfield',
+					                            fieldLabel: 'Motif',
+					                            width:480
+					                        }]
+					                    },{
+					                        xtype: 'panel',
+					                        height:'100%',
+					                        layout: {
+					                            pack: 'center',
+					                            type: 'hbox'
+					                        },
+					                        width: '100%',
+					                        items: [{
+					                            xtype: 'numberfield',
+					                            itemId: 'p1',
+					                            fieldLabel: 'Nombre de bénéficiaires:',
+					                            name:'beneficiaryNumber',
+					                            vtypeText:'Le nombre de bénéficiaires doit saisie est différent au nombre de bénéficiaires selctionnés',
+					                            msgTarget: 'under',
+					                            width:480
+					                        }]
+					                    },{
+					                        xtype: 'panel',
+					                        height:'100%',
+					                        layout: {
+					                            pack: 'center',
+					                            type: 'hbox'
+					                        },
+					                        width: '100%',
+					                        items: [{
+					                           xtype: 'numberfield',
+					                           itemId:'montant',
+					                            fieldLabel: 'Montant',
+					                            width:480
+					                        }]
+					                    },{
+					                        xtype: 'panel',
+					                        height:'100%',
+					                        layout: {
+					                            pack: 'center',
+					                            type: 'hbox'
+					                        },
+					                        colspan: 2,
+					                        width: '100%',
+					                        items: [{
+					                           xtype: 'button',
+					                           text: 'Enregistrer',
+					                           action:'register',
+					                           width:100,
+					                           margin:5,
+					                        },{
+					                           xtype: 'button',
+					                           text: 'Annuler',
+					                            width:100,
+					                            margin:5,
+					                        }]
+					                    }	
+
+					                    ],
+					                    },
+					                
+					            ]
+						});
+
+						formPanel.render('test');
+
+					});
+
+			/*]]>*/
+		</script>
+
+
+
+		<div id="test" />
+
+	</div>
+
+</body>
+</html>
