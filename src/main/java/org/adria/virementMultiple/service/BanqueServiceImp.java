@@ -5,6 +5,7 @@ import java.util.List;
 import org.adria.virementMultiple.dao.IBanqueDao;
 import org.adria.virementMultiple.entities.Account;
 import org.adria.virementMultiple.entities.Beneficiary;
+import org.adria.virementMultiple.entities.MultipleTransfers;
 import org.adria.virementMultiple.entities.MultipleTransfersBeneficiary;
 import org.adria.virementMultiple.entities.Subscriber;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,11 @@ public class BanqueServiceImp implements IBanqueService{
 
 	public void setBanqueDao(IBanqueDao banqueDao) {
 		this.banqueDao = banqueDao;
+	}
+
+	@Override
+	public MultipleTransfers save(MultipleTransfers multipleTransfers) {
+		return banqueDao.save(multipleTransfers);
 	}
 
 

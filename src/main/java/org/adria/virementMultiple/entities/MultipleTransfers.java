@@ -25,9 +25,41 @@ public class MultipleTransfers extends Transfer{
 		// TODO Auto-generated constructor stub
 	}
 
+	public MultipleTransfers(Date creationDate, Date executionDate, BigInteger balance, String motif,
+			Integer beneficiaryNumber, String status, Set<MultipleTransfersBeneficiary> mtb) {
+		super(creationDate, executionDate, balance, motif);
+		BeneficiaryNumber = beneficiaryNumber;
+		this.status = status;
+		this.mtb = mtb;
+	}
+
 	public MultipleTransfers(Date createdAt, Date executionDate, BigInteger balance, String motif) {
 		super(createdAt, executionDate, balance, motif);
 		// TODO Auto-generated constructor stub
+	}
+
+	public Integer getBeneficiaryNumber() {
+		return BeneficiaryNumber;
+	}
+
+	public void setBeneficiaryNumber(Integer beneficiaryNumber) {
+		BeneficiaryNumber = beneficiaryNumber;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Set<MultipleTransfersBeneficiary> getMtb() {
+		return mtb;
+	}
+
+	public void setMtb(Set<MultipleTransfersBeneficiary> mtb) {
+		this.mtb = mtb;
 	}
 	
 }

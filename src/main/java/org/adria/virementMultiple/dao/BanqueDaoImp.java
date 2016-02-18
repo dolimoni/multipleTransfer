@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.adria.virementMultiple.entities.Account;
 import org.adria.virementMultiple.entities.Beneficiary;
+import org.adria.virementMultiple.entities.MultipleTransfers;
 import org.adria.virementMultiple.entities.MultipleTransfersBeneficiary;
 import org.adria.virementMultiple.entities.Subscriber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.adria.virementMultiple.dao.MutipleTransferRepo;;
 
 @Component
 @Transactional
@@ -26,6 +28,8 @@ public class BanqueDaoImp implements IBanqueDao{
 	BeneficiaryRepo br;
 	
 	
+	@Autowired
+	MutipleTransferRepo mt;
 	
 	@Override
 	public Boolean authenticate(String username, String password) {
@@ -74,6 +78,12 @@ public class BanqueDaoImp implements IBanqueDao{
 	@Override
 	public Subscriber findByUsername(String username) {
 		return sr.findByUsername(username);
+	}
+
+	@Override
+	public MultipleTransfers save(MultipleTransfers multipleTransfers) {
+		
+		return mt.saveAndFlush(multipleTransfers);
 	}
 
 	

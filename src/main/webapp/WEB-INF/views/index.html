@@ -21,7 +21,7 @@
 			Ext.onReady(function() {
 						Ext.QuickTips.init();
 						var beneficiarySelected= Ext.create('Ext.data.Store', {
-						    fields: ['firstName', 'montant','accountNumber'],
+						    fields: ['firstName', 'montant','beneficiaryId'],
 						    autoLoad:false,
 						   /* proxy: {
 						        type: 'ajax',
@@ -34,8 +34,8 @@
 						    }*/
 
 						    data: [
-						        {"firstName":"essalhi", "montant":"791995191992","accountNumber":"0533333333"},
-						        {"firstName":"essalhi", "montant":"","accountNumber":"0444444444"}
+						        {"firstName":"essalhi", "montant":"791995191992","beneficiaryId":"0533333333"},
+						        {"firstName":"essalhi", "montant":"","beneficiaryId":"0444444444"}
 						    ]
 						});
 						var beneficiaries = Ext.create('Ext.data.Store', {
@@ -63,7 +63,7 @@
 						});
 						
 						var comptes =Ext.create('Ext.data.Store',{
-							fields: ['entitled'],
+							fields: ['accountNumber'],
 						    autoload:true,
 						    proxy: {
 						        type: 'ajax',
@@ -80,7 +80,8 @@
 					    });
 						
 						var formPanel = Ext.create('Ext.form.Panel', {
-							 xtype: 'panel',
+							    xtype: 'panel',
+							    id:'panel_1',
 					            title: 'Virememnt Multiple',
 					            
 					            height: 800,
@@ -116,9 +117,9 @@
 									               editor: 'textfield'
 									           },
 									           {
-									               text: 'accountNumber',
+									               text: 'Identifiant',
 									               flex: 1,
-									               dataIndex: 'accountNumber'
+									               dataIndex: 'beneficiaryId'
 									           }
 									           ,{
 									            xtype:'actioncolumn',
@@ -171,7 +172,7 @@
 								     				    params : { "beneficiaryId" : beneficiaryId },
 								     				    success: function(response){
 								     				        var myData = Ext.JSON.decode(response.responseText);
-								     				        beneficiarySelected.add(myData);// process server response here
+								     				        beneficiarySelected.add(myData); // process server response here
 								     				    }
 								     				});
 						                	 }
@@ -212,9 +213,11 @@
 					                        items: [{
 					                            xtype: 'combobox',
 					                            width:480,
-					                           fieldLabel: 'Choisir un compte',
+					                            fieldLabel: 'Choisir un compte',
+					                            valueField: 'accountNumber',
 					                            store: comptes,
-					                            displayField: 'entitled', 
+					                            displayField: 'accountNumber', 
+					                            name:'accountNumber'
 					                        }]
 					                    },{
 					                        xtype: 'panel',
@@ -226,9 +229,10 @@
 					                        width: '100%',
 					                        items: [{
 					                            xtype: 'textfield',
-					                            fieldLabel: 'Date de création',
+					                            fieldLabel: 'date de création',
 					                            width:480,
 					                            value:'16/02/2016',
+					                            name:'creationDate',
 					                            disabled: true
 					                        }]
 					                    },{
@@ -243,6 +247,7 @@
 					                           xtype: 'datefield',
 					                            fieldLabel: 'Date d\'exécution',
 					                            msgTarget: 'under',
+					                            name:'executionDate',
 					                            width:480
 					                        }]
 					                    },{
@@ -256,7 +261,8 @@
 					                        items: [{
 					                            xtype: 'textfield',
 					                            fieldLabel: 'Motif',
-					                            width:480
+					                            width:480,
+					                            name:'motif'
 					                        }]
 					                    },{
 					                        xtype: 'panel',
@@ -287,35 +293,45 @@
 					                           xtype: 'numberfield',
 					                           itemId:'montant',
 					                            fieldLabel: 'Montant',
+					                            name:'balancing',
 					                            width:480
 					                        }]
-					                    },{
-					                        xtype: 'panel',
-					                        height:'100%',
-					                        layout: {
-					                            pack: 'center',
-					                            type: 'hbox'
-					                        },
-					                        colspan: 2,
-					                        width: '100%',
-					                        items: [{
-					                           xtype: 'button',
-					                           text: 'Enregistrer',
-					                           action:'register',
-					                           width:100,
-					                           margin:5,
-					                        },{
-					                           xtype: 'button',
-					                           text: 'Annuler',
-					                            width:100,
-					                            margin:5,
-					                        }]
-					                    }	
-
-					                    ],
-					                    },
-					                
-					            ]
+					                    }],
+					                	buttons: [{
+								            text: 'Save',
+								            
+								            handler: function() {
+								                //var form = Ext.get('id_form');
+								                var form = this.up('form').getForm();
+								                var myItems = beneficiarySelected.getRange();
+												var myJson = [];
+												for ( var i in myItems) {
+												 myJson.push({'j_idBeneficiaire' : myItems[i].get('beneficiaryId'),
+															'j_montant' : myItems[i].get('montant'),
+															});
+												} 
+								                form.submit({
+								                	url: [[@{/save}]],
+								                	params : {
+								                		beneficiariesBalancing : Ext.encode(myJson),
+								                		"creationDate":"11/10/1992"													},
+								                	success: function(fp, o) {
+								                		 //location.href = Ext.decode(o.response.responseText).msg;
+								                		 alert("success");
+								                	},
+								                	failure: function(fp, o) {
+								                		Ext.Msg.alert('Failure', 'Erreur');
+													} 
+								                })
+								            }
+								        },{
+								            text: 'Cancel',
+								            handler: function() {
+								                this.up('form').getForm().reset();
+								            }
+								        }]
+									} ]
+					                        
 						});
 
 						formPanel.render('test');

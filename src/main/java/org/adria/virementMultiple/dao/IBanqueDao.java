@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.adria.virementMultiple.entities.Account;
 import org.adria.virementMultiple.entities.Beneficiary;
+import org.adria.virementMultiple.entities.MultipleTransfers;
 import org.adria.virementMultiple.entities.MultipleTransfersBeneficiary;
 import org.adria.virementMultiple.entities.Subscriber;
 
@@ -17,4 +18,5 @@ public interface IBanqueDao {
 	Boolean Save(List<MultipleTransfersBeneficiary> mtb);
 	Boolean Confirme(String username,String password);
 	Subscriber findByUsername(String username);	
+	MultipleTransfers save(MultipleTransfers multipleTransfers);
 }
