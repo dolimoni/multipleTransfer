@@ -21,7 +21,7 @@
 			Ext.onReady(function() {
 						Ext.QuickTips.init();
 						var beneficiarySelected= Ext.create('Ext.data.Store', {
-						    fields: ['name', 'montant','idb'],
+						    fields: ['firstName', 'montant','accountNumber'],
 						    autoLoad:false,
 						   /* proxy: {
 						        type: 'ajax',
@@ -34,34 +34,32 @@
 						    }*/
 
 						    data: [
-						        {"name":"essalhi", "montant":"791995191992","idb":"0533333333"},
-						        {"name":"essalhi", "montant":"","idb":"0444444444"}
+						        {"firstName":"essalhi", "montant":"791995191992","accountNumber":"0533333333"},
+						        {"firstName":"essalhi", "montant":"","accountNumber":"0444444444"}
 						    ]
 						});
 						var beneficiaries = Ext.create('Ext.data.Store', {
-						    fields: ['identifiant', 'accountNumber'],
+						    fields: ['beneficiaryId', 'accountNumber'],
 						    autoload:true,
-						   /* proxy: {
+						    /* proxy: {
 						        type: 'ajax',
-						        url: 'data/beneficiaries.json',
+						        url:  [[@{/comptes}]],
 						        reader: {
 						            type: 'json',
-						            root: 'beneficiaries',
-						            successProperty: 'success'
+						            root: 'root',
 						        }
-						    }*/
+						    }, */
 						    data : [
-						       
-						        {"identifiant":"4949", "accountNumber":"791995191992"},
-						        {"identifiant":"1984", "accountNumber":"984495121200"},
-						        {"identifiant":"4491", "accountNumber":"484949494984"},
-						        {"identifiant":"0551", "accountNumber":"791995191992"},
-						        {"identifiant":"0589", "accountNumber":"984495121200"},
-						        {"identifiant":"7813", "accountNumber":"484949494984"},
-						        {"identifiant":"6521", "accountNumber":"791995191992"},
-						        {"identifiant":"8910", "accountNumber":"984495121200"},
-						        {"identifiant":"0567", "accountNumber":"484949494984"},
-						    ]
+								       
+							        {"beneficiaryId":"1", "accountNumber":"791995191992"},
+							        {"beneficiaryId":"2", "accountNumber":"984495121200"},
+							        {"beneficiaryId":"3", "accountNumber":"484949494984"},
+							        {"beneficiaryId":"4", "accountNumber":"791995191992"},
+							        {"beneficiaryId":"5", "accountNumber":"984495121200"},
+							        {"beneficiaryId":"6", "accountNumber":"484949494984"},
+							       
+							    ]
+						    
 						});
 						
 						var comptes =Ext.create('Ext.data.Store',{
@@ -73,10 +71,13 @@
 						        reader: {
 						            type: 'json',
 						            root: 'root',
-						            successProperty: 'success'
 						        }
 						    }
 						});
+						
+						var cellEditing = Ext.create('Ext.grid.plugin.CellEditing', {
+					        clicksToEdit: 1
+					    });
 						
 						var formPanel = Ext.create('Ext.form.Panel', {
 							 xtype: 'panel',
@@ -91,7 +92,8 @@
 					                    region:'east',
 					                    xtype: 'grid',
 					                    store: beneficiarySelected,
-									      selType: 'cellmodel',
+									       selType: 'cellmodel',
+									       plugins: [cellEditing],
 									       width: '50%',
 									       height: 250,
 									       title: 'Béneficiaires des virements',
@@ -103,7 +105,7 @@
 									               width: 100,
 									               sortable: false,
 									               hideable: false,
-									               dataIndex: 'name'
+									               dataIndex: 'firstName'
 									           }
 									           ,
 									           {
@@ -114,9 +116,9 @@
 									               editor: 'textfield'
 									           },
 									           {
-									               text: 'idb',
+									               text: 'accountNumber',
 									               flex: 1,
-									               dataIndex: 'idb'
+									               dataIndex: 'accountNumber'
 									           }
 									           ,{
 									            xtype:'actioncolumn',
@@ -141,9 +143,7 @@
 								    
 					                },{
 					                	 region:'west',
-						                 xtype: 'grid',
-						                 alias: 'widget.beneficiaryList',
-						                 
+						                 xtype: 'grid',					                 
 						                 store:beneficiaries, 
 						                 width: '50%',
 						                 height: 250,
@@ -154,17 +154,29 @@
 
 						                         text: 'Béneficiaires',
 						                         flex:3,
-						                         sortable: false,
-						                         hideable: false,
-						                         dataIndex: 'identifiant'
-						                     },
+						                         dataIndex: 'beneficiaryId'
+						                     } ,
 						                     {
-						                         text: 'accountNumber',
+						                         text: 'Numéro de compte',
 						                         flex:5,
-						                         dataIndex: 'accountNumber',
-						                         hidden: false
-						                     },
-						                 ]
+ 						                         dataIndex: 'accountNumber',
+						                     }, 
+						                 ],
+						                 listeners: {
+						                	 itemclick: function(dv, record, item, index, e) {
+						                	 var beneficiaryId = record.get('beneficiaryId');
+								                	 Ext.Ajax.request({ 
+								     					url : [[@{/beneficiary}]],
+								     				    method: 'POST',
+								     				    params : { "beneficiaryId" : beneficiaryId },
+								     				    success: function(response){
+								     				        var myData = Ext.JSON.decode(response.responseText);
+								     				        beneficiarySelected.add(myData);// process server response here
+								     				    }
+								     				});
+						                	 }
+						                 }
+					                     
 						              
 					                },{
 					                	region:'south',

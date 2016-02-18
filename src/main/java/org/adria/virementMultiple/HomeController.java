@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -49,16 +50,25 @@ public class HomeController {
 		return "index";
 	}
 	
-	@RequestMapping(value = "/check", method = RequestMethod.GET)
-	public  @ResponseBody  Beneficiary check(){
+	@RequestMapping(value = "/beneficiaries", method = RequestMethod.GET)
+	public  @ResponseBody  List<Beneficiary> beneficiaries(){
+		Subscriber subscriber=new Subscriber("jira", "ensa", "abdelghafor","Atlas");
+		subscriber.setId(new Long(1));
+		return banqueService.getBeneficiaries(subscriber);
+	}
+	
+	@RequestMapping(value = "/beneficiary", method = RequestMethod.POST)
+	public  @ResponseBody  Beneficiary beneficiary(@RequestParam("beneficiaryId") Long beneficiaryId){
 		
-		return banqueService.getBeneficiaryById(new Long(1));
+		System.out.println("id beneficiarie"+beneficiaryId);
+		return banqueService.getBeneficiaryById(beneficiaryId);
 	}
 	
 	@RequestMapping(value = "/comptes", method = RequestMethod.GET)
 	public  @ResponseBody  List<Account> comptes(){
 		Subscriber subscriber =new Subscriber("jira", "ensa", "Atlas", "abdelghafor");
 		subscriber.setId(new Long(1));
+		System.out.println(banqueService.getAccountBySubscriber(subscriber));
 		return banqueService.getAccountBySubscriber(subscriber);
 	}
 	

@@ -63,6 +63,22 @@ public class Account implements Serializable{
 		return "Account [accountNumber=" + accountNumber + ", entitled=" + entitled + ", balancing=" + balancing
 				+ ", subscriber=" + subscriber + "]";
 	}
+
+	public Long getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(Long accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+
+	public Subscriber getSubscriber() {
+		return subscriber;
+	}
+
+	public void setSubscriber(Subscriber subscriber) {
+		this.subscriber = subscriber;
+	}
 	
 	
 }
