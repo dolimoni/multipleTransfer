@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring3-3.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Home page</title>
+<!-- Extjs import -->
+<link rel="stylesheet" type="text/css"
+	href="resources/extjs/ext-all.css" />
+<script type="text/javascript" src="resources/extjs/ext-all.js"></script>
+<!-- Our script -->
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+
+			Ext.onReady(function() {
+						Ext.QuickTips.init();
+						console.log("list des virements multiples");
+							
+						    /* 	
+							 main Panle
+							*/
+							var formPanel = Ext.create('Ext.form.Panel', {
+								xtype : 'panel',
+								title : 'Confirmation de l\'opération',
+								height : 600,
+								width : '100%',
+								layout : {
+									type : 'hbox',
+									align : 'middle',
+									pack : 'center'
+								},
+								items : [ {
+									xtype : 'button'
+								} ]
+
+							});
+
+
+						formPanel.render('test');
+
+					});
+
+			/*]]>*/
+		</script>
+
+
+
+		<div id="test" />
+
+	</div>
+
+</body>
+</html>

@@ -23,10 +23,50 @@ public class MultipleTransfersBeneficiary implements Serializable{
     @JoinColumn(name = "TRANSFERT_ID")   
 	private MultipleTransfers multipleTransfer;
 	
+	
+	
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "BENEFICIARY_ID")
 	private Beneficiary beneficiary;
-    private Long montant;
+    private Long montant;     
+	
+	public MultipleTransfersBeneficiary() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public MultipleTransfersBeneficiary(long id, MultipleTransfers multipleTransfer, Beneficiary beneficiary,
+			Long montant) {
+		super();
+		this.id = id;
+		this.multipleTransfer = multipleTransfer;
+		this.beneficiary = beneficiary;
+		this.montant = montant;
+	}
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public MultipleTransfers getMultipleTransfer() {
+		return multipleTransfer;
+	}
+	public void setMultipleTransfer(MultipleTransfers multipleTransfer) {
+		this.multipleTransfer = multipleTransfer;
+	}
+	public Beneficiary getBeneficiary() {
+		return beneficiary;
+	}
+	public void setBeneficiary(Beneficiary beneficiary) {
+		this.beneficiary = beneficiary;
+	}
+	public Long getMontant() {
+		return montant;
+	}
+	public void setMontant(Long montant) {
+		this.montant = montant;
+	}
     
     
 	

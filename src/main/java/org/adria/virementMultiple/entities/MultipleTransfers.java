@@ -1,9 +1,8 @@
 package org.adria.virementMultiple.entities;
 
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
@@ -18,7 +17,7 @@ public class MultipleTransfers extends Transfer{
 	private String status;
 	
 	@OneToMany(mappedBy = "multipleTransfer")
-	private Set<MultipleTransfersBeneficiary> mtb = new HashSet<MultipleTransfersBeneficiary>();
+	private List<MultipleTransfersBeneficiary> mtb ;
 	
 	public MultipleTransfers() {
 		super();
@@ -26,7 +25,7 @@ public class MultipleTransfers extends Transfer{
 	}
 
 	public MultipleTransfers(Date creationDate, Date executionDate, BigInteger balance, String motif,
-			Integer beneficiaryNumber, String status, Set<MultipleTransfersBeneficiary> mtb) {
+			Integer beneficiaryNumber, String status, List<MultipleTransfersBeneficiary> mtb) {
 		super(creationDate, executionDate, balance, motif);
 		BeneficiaryNumber = beneficiaryNumber;
 		this.status = status;
@@ -54,11 +53,11 @@ public class MultipleTransfers extends Transfer{
 		this.status = status;
 	}
 
-	public Set<MultipleTransfersBeneficiary> getMtb() {
+	public List<MultipleTransfersBeneficiary> getMtb() {
 		return mtb;
 	}
 
-	public void setMtb(Set<MultipleTransfersBeneficiary> mtb) {
+	public void setMtb(List<MultipleTransfersBeneficiary> mtb) {
 		this.mtb = mtb;
 	}
 	

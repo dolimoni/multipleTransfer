@@ -4,7 +4,6 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1" />
 <title>Home page</title>
 <!-- Extjs import -->
 <link rel="stylesheet" type="text/css"
@@ -19,6 +18,8 @@
 			/*<![CDATA[*/
 
 			Ext.onReady(function() {
+				
+				
 						Ext.QuickTips.init();
 						var beneficiarySelected= Ext.create('Ext.data.Store', {
 						    fields: ['firstName', 'montant','beneficiaryId'],
@@ -33,14 +34,11 @@
 						        }
 						    }*/
 
-						    data: [
-						        {"firstName":"essalhi", "montant":"791995191992","beneficiaryId":"0533333333"},
-						        {"firstName":"essalhi", "montant":"","beneficiaryId":"0444444444"}
-						    ]
+						    
 						});
 						var beneficiaries = Ext.create('Ext.data.Store', {
 						    fields: ['beneficiaryId', 'accountNumber'],
-						    autoload:true,
+						    autoLoad:true,
 						    /* proxy: {
 						        type: 'ajax',
 						        url:  [[@{/comptes}]],
@@ -64,7 +62,15 @@
 						
 						var comptes =Ext.create('Ext.data.Store',{
 							fields: ['accountNumber'],
-						    autoload:true,
+						   // autoLoad:true,
+						    autoLoad : {
+						    	scope : this ,
+						    	callback :  function(){
+						    		var cmb = Ext.getCmp('selectList');
+						    		var store =cmb.store ;
+						    		cmb.setValue(store.getAt('0').get('accountNumber'));
+						    	}
+						    },
 						    proxy: {
 						        type: 'ajax',
 						        url:  [[@{/comptes}]],
@@ -83,11 +89,12 @@
 							    xtype: 'panel',
 							    id:'panel_1',
 					            title: 'Virememnt Multiple',
-					            
-					            height: 800,
+					            padding:'5px',
+					            height: 500,
 					            margins: '50 62 100 105',
 					            width: '100%',
 					            layout: 'border',
+					            buttonAlign: 'center',
 					            items:[
 		 			                {        
 					                    region:'east',
@@ -164,7 +171,7 @@
 						                     }, 
 						                 ],
 						                 listeners: {
-						                	 itemclick: function(dv, record, item, index, e) {
+						                	 itemdblclick: function(dv, record, item, index, e) {
 						                	 var beneficiaryId = record.get('beneficiaryId');
 								                	 Ext.Ajax.request({ 
 								     					url : [[@{/beneficiary}]],
@@ -216,8 +223,12 @@
 					                            fieldLabel: 'Choisir un compte',
 					                            valueField: 'accountNumber',
 					                            store: comptes,
+					                            editable : false ,
+					                            forceSelection : true,
+					                            queryMode : 'local',
 					                            displayField: 'accountNumber', 
-					                            name:'accountNumber'
+					                            name:'accountNumber',
+					                            id : 'selectList'
 					                        }]
 					                    },{
 					                        xtype: 'panel',
@@ -233,7 +244,7 @@
 					                            width:480,
 					                            value:'16/02/2016',
 					                            name:'creationDate',
-					                            disabled: true
+					                            readOnly: true
 					                        }]
 					                    },{
 					                        xtype: 'panel',
@@ -314,10 +325,9 @@
 								                	url: [[@{/save}]],
 								                	params : {
 								                		beneficiariesBalancing : Ext.encode(myJson),
-								                		"creationDate":"11/10/1992"													},
+								                			},	
 								                	success: function(fp, o) {
-								                		 //location.href = Ext.decode(o.response.responseText).msg;
-								                		 alert("success");
+								                		 window.location = Ext.decode(o.response.responseText).msg;
 								                	},
 								                	failure: function(fp, o) {
 								                		Ext.Msg.alert('Failure', 'Erreur');
@@ -335,7 +345,6 @@
 						});
 
 						formPanel.render('test');
-
 					});
 
 			/*]]>*/
