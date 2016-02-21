@@ -23,6 +23,9 @@
 						var panel = new Ext.Panel({
 							padding:'10 10 10 10',
 							margin:'10 10 10 10',
+							bodyStyle: 'background-color: #C5EFF7;color: #6C7A89;',
+							border:false,
+							
 						    layout: {
 						                type: 'hbox',
 						                align: 'center',
@@ -31,7 +34,8 @@
 						         items:[
 						        {
 						            xtype:'label',
-						            html:'Confirmer votre demander'
+						            html:'Confirmer votre demander',
+						           
 						        }
 						    ]
 						});
@@ -43,6 +47,7 @@
 								extend : 'Ext.form.Panel',
 								alias : 'widget.authBox',
 								width : 500,
+								bodyStyle: 'background-color: #C5EFF7;',
 								bodyPadding : 5,
 								fieldDefaults : {
 									msgTarget : 'side',
@@ -55,7 +60,7 @@
 									 
 								},	          
 								          {
-									fieldLabel : 'password',
+									fieldLabel : '<span style="color: rgb(108, 122, 137);"> password </span>',
 									name : 'password',
 									allowBlank : false
 								}],
@@ -85,6 +90,7 @@
 								title : 'Confirmation de l\'opération',
 								height : 600,
 								width : '100%',
+								bodyStyle: 'background-color: #D2D7D3;',
 								layout : {
 									type : 'hbox',
 									align : 'middle',
