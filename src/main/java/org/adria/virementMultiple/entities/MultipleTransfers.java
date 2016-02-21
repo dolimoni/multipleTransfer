@@ -9,6 +9,8 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Entity
 @DiscriminatorValue("MT")
 public class MultipleTransfers extends Transfer{
@@ -16,6 +18,7 @@ public class MultipleTransfers extends Transfer{
 	private Integer BeneficiaryNumber;
 	private String status;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "multipleTransfer")
 	private List<MultipleTransfersBeneficiary> mtb ;
 	
@@ -25,11 +28,10 @@ public class MultipleTransfers extends Transfer{
 	}
 
 	public MultipleTransfers(Date creationDate, Date executionDate, BigInteger balance, String motif,
-			Integer beneficiaryNumber, String status, List<MultipleTransfersBeneficiary> mtb) {
+			Integer beneficiaryNumber, String status) {
 		super(creationDate, executionDate, balance, motif);
 		BeneficiaryNumber = beneficiaryNumber;
 		this.status = status;
-		this.mtb = mtb;
 	}
 
 	public MultipleTransfers(Date createdAt, Date executionDate, BigInteger balance, String motif) {
@@ -59,6 +61,11 @@ public class MultipleTransfers extends Transfer{
 
 	public void setMtb(List<MultipleTransfersBeneficiary> mtb) {
 		this.mtb = mtb;
+	}
+
+	@Override
+	public String toString() {
+		return "MultipleTransfers [BeneficiaryNumber=" + BeneficiaryNumber + ", status=" + status +", toString()=" + super.toString() + "]";
 	}
 	
 }

@@ -7,6 +7,7 @@ import org.adria.virementMultiple.entities.Beneficiary;
 import org.adria.virementMultiple.entities.MultipleTransfers;
 import org.adria.virementMultiple.entities.MultipleTransfersBeneficiary;
 import org.adria.virementMultiple.entities.Subscriber;
+import org.adria.virementMultiple.entities.Transfer;
 
 public interface IBanqueService {
 	
@@ -18,5 +19,8 @@ public interface IBanqueService {
 	Boolean Save(List<MultipleTransfersBeneficiary> mtb);
 	Boolean Confirme(String username,String password);
 	MultipleTransfers save(MultipleTransfers multipleTransfers);
+	MultipleTransfers getMultipleTransfers(MultipleTransfers multipleTransfers);
+	
+	List<MultipleTransfers> getTransfersByAccount(List<Account> accounts);
 
 }

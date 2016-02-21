@@ -95,7 +95,7 @@ public class HomeController {
 		
 	}
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public @ResponseBody String list(Locale locale, Model model) {
+	public  String list(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		return "list";
 	}

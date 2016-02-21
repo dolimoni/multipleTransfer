@@ -8,6 +8,7 @@ import org.adria.virementMultiple.entities.Beneficiary;
 import org.adria.virementMultiple.entities.MultipleTransfers;
 import org.adria.virementMultiple.entities.MultipleTransfersBeneficiary;
 import org.adria.virementMultiple.entities.Subscriber;
+import org.adria.virementMultiple.entities.Transfer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,6 +71,16 @@ public class BanqueServiceImp implements IBanqueService{
 	@Override
 	public MultipleTransfers save(MultipleTransfers multipleTransfers) {
 		return banqueDao.save(multipleTransfers);
+	}
+
+	@Override
+	public MultipleTransfers getMultipleTransfers(MultipleTransfers multipleTransfers) {
+		return banqueDao.getMultipleTransfers(multipleTransfers);
+	}
+
+	@Override
+	public List<MultipleTransfers> getTransfersByAccount(List<Account> accounts) {
+		return banqueDao.getTransfersByAccount(accounts);
 	}
 
 

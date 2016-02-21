@@ -18,39 +18,215 @@
 			/*<![CDATA[*/
 
 			Ext.onReady(function() {
-						Ext.QuickTips.init();
-						console.log("list des virements multiples");
-							
-						    /* 	
-							 main Panle
-							*/
-							var formPanel = Ext.create('Ext.form.Panel', {
-								xtype : 'panel',
-								title : 'Confirmation de l\'opération',
-								height : 600,
-								width : '100%',
-								layout : {
-									type : 'hbox',
-									align : 'middle',
-									pack : 'center'
-								},
-								items : [ {
-									xtype : 'button'
-								} ]
-
-							});
-
-
-						formPanel.render('test');
-
+				/*    
+				Search Panel 
+				 */
+				 var search = Ext.create('Ext.panel.Panel',{
+					 //title:'Search',
+					 height:100,
+					  layout: {
+		                        type: 'table',
+		                        // The total column count must be specified here
+		                        columns: 5,
+		                        tableAttrs: {
+		                        style: {
+		                            width: '100%',
+		                            height:'100%',
+		                        }
+		                    }
+		              },
+		              defaults: {
+	                        // applied to each contained panel
+	                        margin: '5 5 5 5',
+	                        border:false,
+	                 },
+		              items: [
+		              {
+		              	xtype:'textfield',
+		              	fieldLabel:'Numéro de compte',
+		              	labelAlign:'top',
+		              	
+		              	
+		              },
+		              {
+			              	xtype:'datefield',
+			              	valueField: 'executionDate',
+			              	fieldLabel:'Date d\'éxecution',
+			              	name:'executionDate',
+	                        id : 'executionDate',
+			              	labelAlign:'top',
+			          },
+			          {
+			              	xtype:'numberfield',
+			              	valueField: 'minBalancing',
+			              	fieldLabel:'Montant min',
+			              	name:'minBalancing',
+	                        id : 'minBalancing',
+			              	labelAlign:'top',
+			           },
+			           {
+			              	xtype:'numberfield',
+			              	valueField: 'maxBalancing',
+			              	fieldLabel:'Montant max',
+			              	name:'maxBalancing',
+	                        id : 'maxBalancing',
+			              	labelAlign:'top',
+			           },
+			           {
+			        	    xtype:'textfield',
+			              	fieldLabel:'status',
+			              	labelAlign:'top',
+			            },
+		              ],
+				 });
+				
+				 var states = Ext.create('Ext.data.Store', {
+					    fields: ['status', 'name'],
+					    data : [
+					        {"status":"signed", "name":"Alabama"},
+					        {"status":"confirmed", "name":"Alaska"},
+					    ]
 					});
+
+					// Create the combo box, attached to the states data store
+					
+					/* var statusCombo = Ext.create('Ext.form.ComboBox', {
+					    fieldLabel: 'Choose State',
+					    store: states,
+					    queryMode: 'local',
+					    displayField: 'status',
+					    valueField: 'status',
+					    renderTo: Ext.getBody()
+					}); */
+				
+				/* stores */
+				
+				var virements = Ext.create('Ext.data.Store',{
+					fields: ['transfer_id', 'creationDate','accountNumber','balance','motif','status'],
+				    autoLoad:true,
+				     proxy: {
+				        type: 'ajax',
+				        url:  [[@{/search/multipleTransfers}]],
+				        reader: {
+				            type: 'json',
+				            root: 'root',
+				        }
+				    }, 
+				});
+				
+				var comptes =Ext.create('Ext.data.Store',{
+					fields: ['accountNumber'],
+				   // autoLoad:true,
+				    autoLoad : true,
+				    proxy: {
+				        type: 'ajax',
+				        url:  [[@{/comptes}]],
+				        reader: {
+				            type: 'json',
+				            root: 'root',
+				        }
+				    }
+				});
+				
+				var status=Ext.create('Ext.data.Store',{
+					fields: ['status'],
+					   // autoLoad:true,
+					    autoLoad : true,
+					    data : [
+							       
+						        {"status":"saved"},
+						        {"status":"signed and confirmed"},
+						    ]
+					});
+					
+				
+				/* List Panel */
+				
+				var list = Ext.create('Ext.grid.Panel', {
+					    title: 'Liste de vos virements multiples',
+					    store:virements,
+					    margin:'0 10 10 0',
+					    defaults: {
+	                        // applied to each contained panel
+	                        bodyStyle: 'padding:20px',
+	                         border:false,
+	                    },
+					    columns: [
+					        { text: 'id',  dataIndex: 'transfer_id', width: 100,flex:1 },
+					        { text: 'date de création', dataIndex: 'creationDate', flex:1},
+					        { text: 'Compte', dataIndex: 'accountNumber	',flex:1, },
+					        { text: 'Montant', dataIndex: 'balance', flex:1},
+					        { text: 'Motif', dataIndex: 'motif', flex:1 },
+					        { text: 'statut', dataIndex: 'status', flex:1 },
+					    ],
+					    dockedItems: [{
+					        xtype: 'pagingtoolbar',
+					        store: virements,   // same store GridPanel is using
+					        dock: 'bottom',
+					        displayInfo: true
+					    }],
+					    width:'100%',
+					    height:500,
+					    
+					});
+/* 
+				var list = Ext.create('Ext.grid.Panel', {
+					
+				});
+ */
+				/*Main Panel*/
+
+				var mainPanle=Ext.create('Ext.form.Panel', {
+					layout: 'fit',
+					margin:'50 50 50 50',
+					items: [{
+						xtype:search,
+					},{
+						xtype:list,
+					}],
+					buttons: [{
+			            text: 'Save',
+			            
+			            handler: function() {
+			                //var form = Ext.get('id_form');
+			                var form = this.up('form').getForm();
+
+			                form.submit({
+			                	url: [[@{/search/search}]],
+			                	success:function(fp, o) {
+			                		alert("dolilmoni");
+			                		 var myData = Ext.decode(o.response.responseText);
+			     					  console.log(myData);
+			     				        virements.add(myData); // process server response here
+		     				    },
+		     				   failure: function(fp, o) {
+		     					  Ext.Msg.alert('Failure', 'Erreurr');
+		     					  
+		     					  var myData = Ext.decode(o.response.responseText);
+		     					 virements.loadData([],false);
+		     				        virements.add(myData); // process server response here
+								} 
+			                })
+			            }
+			        },{
+			            text: 'Cancel',
+			            handler: function() {
+			                this.up('form').getForm().reset();
+			            }
+			        }]
+					
+				});
+				
+				mainPanle.render('view');
+				
+			});
 
 			/*]]>*/
 		</script>
 
 
 
-		<div id="test" />
+		<div id="view" />
 
 	</div>
 

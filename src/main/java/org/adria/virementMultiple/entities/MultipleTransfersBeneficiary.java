@@ -14,6 +14,12 @@ import javax.persistence.ManyToOne;
 @Entity
 public class MultipleTransfersBeneficiary implements Serializable{
 
+	public MultipleTransfersBeneficiary(MultipleTransfers multipleTransfer, Beneficiary beneficiary, Long montant) {
+		super();
+		this.multipleTransfer = multipleTransfer;
+		this.beneficiary = beneficiary;
+		this.montant = montant;
+	}
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="transfer_id")
@@ -28,7 +34,8 @@ public class MultipleTransfersBeneficiary implements Serializable{
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "BENEFICIARY_ID")
 	private Beneficiary beneficiary;
-    private Long montant;     
+   
+	private Long montant;     
 	
 	public MultipleTransfersBeneficiary() {
 		super();
