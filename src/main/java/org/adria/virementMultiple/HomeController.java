@@ -38,12 +38,12 @@ import com.google.gson.Gson;
  */
 @RequestMapping(value = "/")
 @Controller
-public class HomeController {
+public class HomeController { 
 
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	@Autowired
-	IBanqueService banqueService;
+	IBanqueService banqueService; 
 
 	@Autowired
 	JSonToObject jSonToObject;

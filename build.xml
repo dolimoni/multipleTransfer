@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+ <project default="AfficherVersionAnt" name="MonProjet">
+   <target name="AfficherVersionAnt">
+     <echo message="Version d'Ant utilisée: ${ant.version}"/> 
+   </target>
+ </project>

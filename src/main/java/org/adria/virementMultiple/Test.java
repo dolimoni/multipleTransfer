@@ -41,7 +41,7 @@ public class Test {
 		this.executionDate = executionDate;
 		this.motif = motif;
 		this.beneficiaryNumber = beneficiaryNumber;
-		this.balancing = balancing;
+		this.balancing = balancing;        
 	}
 
 	public String getBalancing() {
